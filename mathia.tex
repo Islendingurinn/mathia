@@ -1,5 +1,6 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage{amsmath}
+\usepackage{bm}
 \begin{document}
 
 \title{%
@@ -43,11 +44,22 @@ A more analytical way to compute the global minimum of the convex error function
 \boldmath{$\Theta $}\unboldmath \ $=$ \boldmath{$X$}\unboldmath$^T$\boldmath{$X$}\unboldmath$^{-1}$\boldmath{$X$}\unboldmath$^T$\boldmath{$y$}\unboldmath
 \end{center}
 The theta refers to the matrix containing the minimized \(\theta_j\) values, or weights. The matrix \boldmath{$X$}\unboldmath is the feature dataset, while the matrix \boldmath{$y$}\unboldmath \ is the actual result not predicted by the hypothesis. By taking the squared error function and transform it into a vectorized format:
-\[\begin{bmatrix} h_\theta(x^0) - y^0 \\ h_\theta(x^1) - y^1 \\ h_\theta(x^2) - y^2 \\ . \\ . \\ . \\ h_\theta(x^m) - y^m\end{bmatrix}\]
+
+\[\begin{bmatrix} h_{\boldsymbol{\Theta}} (\boldsymbol{X}^0) - y^0 \\ h_{\boldsymbol{\Theta}} (\boldsymbol{X}^1) - y^1 \\ h_{\boldsymbol{\Theta}} (\boldsymbol{X}^2) - y^2 \\ . \\ . \\ . \\  \\ h_{\boldsymbol{\Theta}} (\boldsymbol{X}^m) - y^m\end{bmatrix}\]
+
 The expression can be split up into two vectors: 
-\[\begin{bmatrix} h_\theta(x^0) \\ h_\theta(x^1) \\ h_\theta(x^2) \\ . \\ . \\ . \\ h_\theta(x^m)\end{bmatrix} - \begin{bmatrix} y^0 \\ y^1 \\ y^2 \\ . \\ . \\ . \\ y^m \end{bmatrix}\]
+\[\begin{bmatrix} h_{\boldsymbol{\Theta}} (\boldsymbol{X}^0) \\ h_{\boldsymbol{\Theta}} (\boldsymbol{X}^1) \\ h_{\boldsymbol{\Theta}} (\boldsymbol{X}^2) \\ . \\ . \\ . \\ h_{\boldsymbol{\Theta}} (\boldsymbol{X}^m) \end{bmatrix} - \begin{bmatrix} y^0 \\ y^1 \\ y^2 \\ . \\ . \\ . \\ y^m \end{bmatrix}\]
 The two vectors can then be simplified, the left one through the identity of the hypothesis function, and the right one given our definition of \boldmath{$y$}\unboldmath:
-\begin{bmatrix} \boldmath{$\Theta$}\unboldmath$^T *  \\
+\[\begin{bmatrix} \boldsymbol{\Theta}^T * \boldsymbol{X}^0 \\ \boldsymbol{\Theta}^T * \boldsymbol{X}^1 \\ \boldsymbol{\Theta}^T * \boldsymbol{X}^2 \\ . \\ . \\ . \\ \boldsymbol{\Theta}^T * \boldsymbol{X}^m \end{bmatrix} - \boldsymbol{y}\]
+As the hypothesis function is defined as \(\sum_{i=0}^m \boldsymbol{\Theta}_i x_i\), the vector can be written as:
+\[\begin{bmatrix} \boldsymbol{\Theta}_0 * \boldsymbol{X}_0^0 + \boldsymbol{\Theta}_1 * \boldsymbol{X}_1^0 + \boldsymbol{\Theta}_2 * \boldsymbol{X}_2^0 + ... + \boldsymbol{\Theta}_n * \boldsymbol{X}_n^0 \\ \boldsymbol{\Theta}_0 * \boldsymbol{X}_0^1 + \boldsymbol{\Theta}_1 * \boldsymbol{X}_1^1 + \boldsymbol{\Theta}_2 * \boldsymbol{X}_2^1 + ... + \boldsymbol{\Theta}_n * \boldsymbol{X}_n^1 \\ . \\ . \\ . \\ \boldsymbol{\Theta}_0 * \boldsymbol{X}_0^m + \boldsymbol{\Theta}_1 * \boldsymbol{X}_1^m + \boldsymbol{\Theta}_2 * \boldsymbol{X}_2^m + ... + \boldsymbol{\Theta}_n * \boldsymbol{X}_n^m \end{bmatrix} - \boldsymbol{y}\]
+The error function can therefore be written as \(\boldsymbol{X\Theta} - \boldsymbol{y}\). To find the square error, the error function can have its terms multiplied by themselves, as so:
+\[\frac{1}{2m}(\boldsymbol{X\Theta} - \boldsymbol{y})^T(\boldsymbol{X\Theta} - \boldsymbol{y})\]
+Now, to find the minimum \(\boldsymbol{\Theta}\) the expression shall be derived with respect to \(\boldsymbol{\Theta}\) and then solved for \(0\):
+\[\frac{\partial}{\partial\boldsymbol{\Theta}}[(\boldsymbol{X\Theta} - \boldsymbol{y})^T(\boldsymbol{X\Theta} - \boldsymbol{y})] = 0\]
+
+
+
 
 
 
