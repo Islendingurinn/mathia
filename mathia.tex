@@ -30,18 +30,18 @@ The square-error function is easy to use given its convexity. The function is co
 \section{Gradient Descent}
 The goal of the gradient descent algorithm is to minimize the error function by using the tangent line at an initial point, and moving into the direction of the negative gradient, toward a local minimum until the gradient is zero at a local minimum. If the function is convex, that point is going to be the global minimum, but if the function is not convex, the reached minimum will depend on the starting point and not necessarily be a global minimum. The algorithm is defined as \[\theta_j = \theta_j - \alpha \frac{\partial}{\partial\theta_j} J(\theta_0, \theta_1, ..., \theta_n)\] The \(\alpha\) marks the learning rate, which gives the difference between the points. A higher learning rate means a bigger jump, which if high enough can result in overshooting the local minimum and failing to converge. A smaller learning rate means the opposite but will be computationally more difficult. The learning rate gets multiplied by the partial derivative of to error function, with respect to the current parameter. The algorithm gets repeated for every parameter at once and moves accordingly. However, to get a complete algorithm, the error function must be partially derived. 
 \[J(\theta_0, \theta_1, ..., \theta_n) = \frac{1}{2m} \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})^2\]
-\[\frac{\partial}{\partial\theta_j} J(\theta_0, \theta_1, ..., \theta_n) = \frac{\partial}{\partial\theta_j} (\frac{1}{2m} \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})^2)\]
-\[\frac{\partial}{\partial\theta_j} J(\theta_0, \theta_1, ..., \theta_n) = \frac{1}{2m} \sum_{i=1}^m \frac{\partial}{\partial\theta_j} (h_\theta(x^{(i)}) - y^{(i)})^2)\]
-\[\frac{\partial}{\partial\theta_j} J(\theta_0, \theta_1, ..., \theta_n) = \frac{1}{2m} \sum_{i=1}^m 2(h_\theta(x^{(i)}) - y^{(i)}) \frac{\partial}{\partial\theta_j}(h_\theta(x^{(i)}) - y^{(i)})\]
-\[\frac{\partial}{\partial\theta_j} J(\theta_0, \theta_1, ..., \theta_n) = \frac{1}{m} \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})\frac{\partial}{\partial\theta_j} (\theta_0x_0+\theta_1x_1+...+\theta_nx_n-y^{(i)})\]
-\[\frac{\partial}{\partial\theta_j} J(\theta_0, \theta_1, ..., \theta_n) = \frac{1}{m} \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)}\]
+\[\frac{\partial}{\partial\theta_j} [J(\theta_0, \theta_1, ..., \theta_n)] = \frac{\partial}{\partial\theta_j} [\frac{1}{2m} \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})^2]\]
+\[\frac{\partial}{\partial\theta_j} [J(\theta_0, \theta_1, ..., \theta_n)] = \frac{1}{2m} \sum_{i=1}^m \frac{\partial}{\partial\theta_j} [h_\theta(x^{(i)}) - y^{(i)})^2]\]
+\[\frac{\partial}{\partial\theta_j} [J(\theta_0, \theta_1, ..., \theta_n)] = \frac{1}{2m} \sum_{i=1}^m 2(h_\theta(x^{(i)}) - y^{(i)}) \frac{\partial}{\partial\theta_j}[h_\theta(x^{(i)}) - y^{(i)}]\]
+\[\frac{\partial}{\partial\theta_j} [J(\theta_0, \theta_1, ..., \theta_n)] = \frac{1}{m} \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})\frac{\partial}{\partial\theta_j} [\theta_0x_0+\theta_1x_1+...+\theta_nx_n-y^{(i)}]\]
+\[\frac{\partial}{\partial\theta_j} [J(\theta_0, \theta_1, ..., \theta_n)] = \frac{1}{m} \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)}\]
 The final algorithm is therefore
 \[\theta_j = \theta_j - \alpha \frac{1}{m} \sum_{i=1}^m (h_\theta(x^{(i)} - y^{(i)})x_j^{(i)} for j = 0,1,...,n\]
 
 \section{Normal equations}
 A more analytical way to compute the global minimum of the convex error function is by using normal equations. The normal equation gives the parameters for a minimized error function and is defined as
 \begin{center}
-\boldmath{$\Theta $}\unboldmath \ $=$ \boldmath{$X$}\unboldmath$^T$\boldmath{$X$}\unboldmath$^{-1}$\boldmath{$X$}\unboldmath$^T$\boldmath{$y$}\unboldmath
+\boldmath{$\Theta $}\unboldmath \ $=$ (\boldmath{$X$}\unboldmath$^T$\boldmath{$X$}\unboldmath$)^{-1}$\boldmath{$X$}\unboldmath$^T$\boldmath{$y$}\unboldmath
 \end{center}
 The theta refers to the matrix containing the minimized \(\theta_j\) values, or weights. The matrix \boldmath{$X$}\unboldmath is the feature dataset, while the matrix \boldmath{$y$}\unboldmath \ is the actual result not predicted by the hypothesis. By taking the squared error function and transform it into a vectorized format:
 
@@ -57,14 +57,23 @@ The error function can therefore be written as \(\boldsymbol{X\Theta} - \boldsym
 \[\frac{1}{2m}(\boldsymbol{X\Theta} - \boldsymbol{y})^T(\boldsymbol{X\Theta} - \boldsymbol{y})\]
 Now, to find the minimum \(\boldsymbol{\Theta}\) the expression shall be derived with respect to \(\boldsymbol{\Theta}\) and then solved for \(0\):
 \[\frac{\partial}{\partial\boldsymbol{\Theta}}[(\boldsymbol{X\Theta} - \boldsymbol{y})^T(\boldsymbol{X\Theta} - \boldsymbol{y})] = 0\]
-
-
-
-
-
-
-
-
+The transpose then gets distributed, following the distribution identity \((\boldsymbol{A} + \boldsymbol{B})^T = \boldsymbol{A}^T + \boldsymbol{B}^T\)
+\[\frac{\partial}{\partial\boldsymbol{\Theta}}[((\boldsymbol{X\Theta})^T - \boldsymbol{y}^T)(\boldsymbol{X\Theta} - \boldsymbol{y})] = 0\]
+Then distributing the parenthesis:
+\[\frac{\partial}{\partial\boldsymbol{\Theta}}[(\boldsymbol{X\Theta})^T(\boldsymbol{X\Theta}) - \boldsymbol{y}(\boldsymbol{X\Theta})^T - \boldsymbol{y}^T(\boldsymbol{X\Theta}) - \boldsymbol{y}^T\boldsymbol{y}] = 0\]
+Then using the distribution identity again, and collecting like terms given the two vectors are of the same dimensionality:
+\[\frac{\partial}{\partial\boldsymbol{\Theta}}[\boldsymbol{X}^T\boldsymbol{\Theta}^T\boldsymbol{X\Theta} - 2\boldsymbol{X}^T\boldsymbol{\Theta}^T\boldsymbol{y} - \boldsymbol{y}^T\boldsymbol{y}] = 0\]
+Then splitting the terms and removing the scalar term: 
+\[\frac{\partial}{\partial\boldsymbol{\Theta}}[\boldsymbol{X}^T\boldsymbol{\Theta}^T\boldsymbol{X\Theta}] - \frac{\partial}{\partial\boldsymbol{\Theta}}[2\boldsymbol{X}^T\boldsymbol{\Theta}^T\boldsymbol{y}] = 0\]
+Evaluating the terms and extracting the scalars:
+\[\boldsymbol{X}^T\boldsymbol{X}\frac{\partial}{\partial\boldsymbol{\Theta}}[\boldsymbol{\Theta}^T\boldsymbol{\Theta}] - 2\boldsymbol{X}^T\boldsymbol{y}\frac{\partial}{\partial\boldsymbol{\Theta}}[\boldsymbol{\Theta}^T] = 0 \]
+\[2\boldsymbol{X}^T\boldsymbol{X\Theta} - 2\boldsymbol{X}^T\boldsymbol{y} = 0\]
+Manipulate the expression with some algebra:
+\[2\boldsymbol{X}^T\boldsymbol{X\Theta} = 2\boldsymbol{X}^T\boldsymbol{y}\]
+\[\boldsymbol{X}^T\boldsymbol{X\Theta} = \boldsymbol{X}^T\boldsymbol{y}\]
+To isolate $\boldsymbol{\Theta}$ the matrix has to be multiplied by its inverse:
+\[(\boldsymbol{X}^T\boldsymbol{X})(\boldsymbol{X}^T\boldsymbol{X})^{-1}\boldsymbol{\Theta} = (\boldsymbol{X}^T\boldsymbol{X})^{-1}\boldsymbol{X}^T\boldsymbol{y}\]
+\[\boldsymbol{\Theta} = (\boldsymbol{X}^T\boldsymbol{X})^{-1}\boldsymbol{X}^T\boldsymbol{y}\]
 
 
 
