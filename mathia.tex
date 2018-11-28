@@ -1,6 +1,9 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage{amsmath}
+\usepackage{graphicx}
 \usepackage{bm}
+
+\graphicspath{ {.} }
 \begin{document}
 
 \title{%
@@ -37,6 +40,9 @@ The goal of the gradient descent algorithm is to minimize the error function by 
 \[\frac{\partial}{\partial\theta_j} [J(\theta_0, \theta_1, ..., \theta_n)] = \frac{1}{m} \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)}\]
 The final algorithm is therefore
 \[\theta_j = \theta_j - \alpha \frac{1}{m} \sum_{i=1}^m (h_\theta(x^{(i)} - y^{(i)})x_j^{(i)} for j = 0,1,...,n\]
+The algorithm can be seen in action on this figure. The plot shows the plot of a two feature squared error, plotted against the cost function. The path of the algorithm toward the global minimum is shown in red and blue, for each iteration. 
+\\
+\includegraphics[scale=0.38]{gradientdescent}
 
 \section{Normal equations}
 A more analytical way to compute the global minimum of the convex error function is by using normal equations. The normal equation gives the parameters for a minimized error function and is defined as
