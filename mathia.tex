@@ -17,20 +17,24 @@
 \section{Notation}
 The notation \(m\) means the number of training sets. \\
 The notation \(n\) means the n-th dimension.  \\
-The notation \boldmath{$\Theta$}\unboldmath \ means the weights of the model. \\
+The notation $x$ means input, while $\boldsymbol{X}$ means the matrix collection of all inputs and features. \\
+The notation $y$ means output, while $\boldsymbol{y}$ means the matrix collection of all outputs. \\
+The notation \boldmath{$\Theta$}\unboldmath \ means the matrix collection of weights of the model. \\
 The notation $\theta_{jk}^l$ means the weight connecting neuron j to k, in layer l. \\
 The notation $b_j^l$ means the bias connected to neuron j, in layer l. \\
-The notation $\sigma$ means the activation function.
+The notation $z_j^l$ means the value gained from the hypothesis function. \\
+The notation $\sigma$ means the activation function. \\
+The notation $a^l_j$ means the activation of neuron j, in layer l. 
 
 \section{Neural Networks}
 An artificial neural network is defined as 'a computer system modelled on the human brain and nervous system'. In a sentence, a neural network is a collection of input, hidden and output neurons whose values are determined through learning. The process is that given some input x the network will give an output \(y\), which follows a mathematical model that learns from previous experiences. The neural network setup has three layers. The first layer is the input layer, a matrix \textbf{\emph{X}} of \(i\) inputs \(x_0,x_1,...x_i\). The input layer is simply the values that are put into the network, or the data. The second layer is the hidden layer where there is a collection of weights(\(\boldsymbol{\Theta}\)) and biases, which are manipulated by the machine learning algorithm from experience to introduce the most accurate model. The hidden player is anything that is not a part of the input and output layers and can be any layers thick. The last layer is the output layer which gives out the output, \(y\). The weights in the hidden layer take on a certain activation value based on a hypothesis function that gets run through an activation function. The collection of values from the previous layer then gets transitioned to the next layer, into each weight and new values are computed. The weights end up making a decision on a regression or classification problem. A regression problem deals with continuous problems, for example deciding the price of a certain size of a new house given data about housing prices and sizes in the region. A classification problem deals with classifying the data. For example, deciding if an image is an apple or an orange. At the output layer, these decisions would be given.
 
-\section{Regression}
+\section{Modelling}
 To go with the example of housing prices, a simple example of a regression problem would be finding a good hypothesis function \(h_{\boldsymbol{\Theta}}(x)\) so that it predicts the price the house would sell at, given the input $\boldsymbol{X}$. If we take in a single-variable input on the size of the house, the model is linear on the form  \(h_\theta(x) = \theta_0 + \theta_1x\) where the parameters \(\theta_0\) and \(\theta_1\) are the ideal values to minimize the error, which is noted \(J(\theta\). The goal is that given our training set to learn the weights for our hypothesis function. However, given multiple input variables, the model is \(h_{\boldsymbol{\theta}(x)} = \theta_0x_0 + \theta_1x_1 + ... + \theta_nx_n\). For mathematical convenience, a value $x_0$ is introduced to be set to 1, to simplify the model to:
 \[h_{\boldsymbol{\Theta}}(x) = \sum_{i = 0}^m \theta_ix_i\]
 
 \section{The error function}
-The key to creating accurate models is the error function from the training data. There are multiple ways to represent the error in prediction, but objectively the most popularly used one is the square-error function, as the squared error puts more emphasis on the weights and biases that influence the model the most, as the value is squared. The function takes the predicted value by the model and subtracts the actual value known, squaring both. That is done for all of the data from the training set. In mathematical notation, it is noted as
+The key to creating accurate models is the error function from the training data. There are multiple ways to represent the error in prediction, but objectively the most popularly used one is the square-error function, as the squared error puts more emphasis on the weights and biases that influence the model the most, as the value is squared. The function takes the predicted value by the model and subtracts the actual value known, squaring both. The half is for mathematical convenience. However, that is done for all of the data from the training set. In mathematical notation, it is noted as
 \[J(\boldsymbol{\Theta}) = \frac{1}{2m} \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})^2\]
 The square-error function is easy to use to minimize given its convexity. The function is convex for, which means that there is only a single minimum which makes the minimum easy to find. Through minimizing the error function, the ideal parameters can be found, and the model can be applied to be the best fit.
 
@@ -45,16 +49,16 @@ In the process of backpropagation, it is important the activation function is di
 \[\frac{d}{dx}S = \frac{e^{-x}}{(1+e^{-x})^2}\]
 \[\frac{d}{dx}S = \frac{1 + e^{-x} - 1}{(1+e^{-x})^2}\]
 \[\frac{d}{dx}S = \frac{1}{1+e^{-x}}\bigg[\frac{1+e^{-x}}{1+e^{-x}} - \frac{1}{1+e^{-x}}\bigg] \]
-\[\frac{d}{dx}S = S(1-S)\]
+\[\frac{d}{dx}S = \sigma' = S(1-S)\]
 
 \section{Gradient Descent}
 The goal of the gradient descent algorithm is to minimize the error function by using the tangent line at an initial point, and moving into the direction of the negative gradient, toward a local minimum until the gradient is zero at a local minimum. If the function is convex, that point is going to be the global minimum, but if the function is not convex, the reached minimum will depend on the starting point and not necessarily be a global minimum. The algorithm is defined as \[\theta_j = \theta_j - \alpha \frac{\partial}{\partial\theta_j} J(\boldsymbol{\Theta})\] The \(\alpha\) marks the learning rate, which gives the difference between the points. A higher learning rate means a bigger jump, which if high enough can result in overshooting the local minimum and failing to converge. A smaller learning rate means the opposite but will be computationally more difficult. The learning rate gets multiplied by the partial derivative of to error function, with respect to the current parameter. The algorithm gets repeated for every parameter at once and moves accordingly. However, to get a complete algorithm, the error function must be partially derived. 
 \[J(\boldsymbol{\Theta}) = \frac{1}{2m} \sum_{i=1}^m (h_{\boldsymbol{\Theta}}(x^{(i)}) - y^{(i)})^2\]
-\[\frac{\partial}{\partial\theta_j} [J(\boldsymbol{\Theta})] = \frac{\partial}{\partial\theta_j} [\frac{1}{2m} \sum_{i=1}^m (h_{\boldsymbol{\Theta}}(x^{(i)}) - y^{(i)})^2]\]
+\[\frac{\partial}{\partial\theta_j} [J(\boldsymbol{\Theta})] = \frac{\partial}{\partial\theta_j} \Big[ \frac{1}{2m} \sum_{i=1}^m (h_{\boldsymbol{\Theta}}(x^{(i)}) - y^{(i)})^2\Big]\]
 \[\frac{\partial}{\partial\theta_j} [J(\boldsymbol{\Theta})] = \frac{1}{2m} \sum_{i=1}^m \frac{\partial}{\partial\theta_j} [h_{\boldsymbol{\Theta}}(x^{(i)}) - y^{(i)})^2]\]
 \[\frac{\partial}{\partial\theta_j} [J(\boldsymbol{\Theta})] = \frac{1}{2m} \sum_{i=1}^m 2(h_{\boldsymbol{\Theta}}(x^{(i)}) - y^{(i)}) \frac{\partial}{\partial\theta_j}[h_{\boldsymbol{\Theta}}(x^{(i)}) - y^{(i)}]\]
 \[\frac{\partial}{\partial\theta_j} [J(\boldsymbol{\Theta})] = \frac{1}{m} \sum_{i=1}^m (h_{\boldsymbol{\Theta}}(x^{(i)}) - y^{(i)})\frac{\partial}{\partial\theta_j} [\theta_0x_0+\theta_1x_1+...+\theta_nx_n-y^{(i)}]\]
-\[\frac{\partial}{\partial\theta_j} [J((\boldsymbol{\Theta})] = \frac{1}{m} \sum_{i=1}^m (h_{\boldsymbol{\Theta}}(x^{(i)}) - y^{(i)})x_j^{(i)}\]
+\[\frac{\partial}{\partial\theta_j} [J(\boldsymbol{\Theta})] = \frac{1}{m} \sum_{i=1}^m (h_{\boldsymbol{\Theta}}(x^{(i)}) - y^{(i)})x_j^{(i)}\]
 The final algorithm is therefore
 \[\theta_j = \theta_j - \alpha \frac{1}{m} \sum_{i=1}^m (h_{\boldsymbol{\Theta}}(x^{(i)} - y^{(i)})x_j^{(i)} for j = 0,1,...,n\]
 The algorithm can be seen in action on this figure. The plot shows the plot of a two feature squared error, plotted against the cost function. The path of the algorithm toward the global minimum is shown in red and blue, for each iteration. 
@@ -104,6 +108,20 @@ Now that the normal equations and gradient descent is explained, the backpropaga
 \\ 3. Perform minimizing on each weight using derivates
 \\ 4. Repeat\end{center}
 Backpropagation is an application of the chain rule from calculus. The goal of the algorithm is to get the derivate of every weight and bias with respect to the error function. The derivative permits seeing the impact changing a certain weight has to the overall cost function, along with minimizing the weights with respect to the error function. 
+\\
+\includegraphics[scale=0.56]{onedimension}
+The figure includes a simple one input, one feature neural network, without a bias, to give further intutition. The network takes in an input, $x$, in the first layer. Then to determine the activation value of the second layer, the hypothesis function $h_{\boldsymbol{\Theta}} = x*\theta_{jk}^1$ gets employed. The value is denoted $z^l_j$ for convenience, l being for layer and j being for identifying the neuron. However, $z^l_j$ then gets ran through the sigmoid function for the complete activation value, denoted $a^l_j$. The process continues, as between the second and third layer the figure showcases the process in further depth. The value $a^l_j$, from our previous neuron, gets multiplied by the weight inbetween them, $\theta_{jk}^2$, and then put through the activation function once again to determine the activation value for the neuron. The process continues until the output, where the model's prediction would be displayed. 
+\\ The backpropagation in this case for our first weight, the one that affects everything in our system, would be the derivative \[\frac{\partial J(\boldsymbol{\Theta})}{\partial \theta_{jk}^1}\] The derivative of the error function with respect to the first weight. However, in order to compute this derivative the chain rule has to be employed, as:
+\[\frac{\partial J(\boldsymbol{\Theta})}{\partial \theta_{jk}^1} = \frac{\partial J(\boldsymbol{\Theta})}{\partial a^4} * \frac{\partial a^4}{\partial z^4} * \frac{\partial z^4}{\partial a^3} * \frac{\partial a^3}{\partial z^3} * \frac{\partial z^3}{\partial a^2} * \frac{\partial a^2}{\partial z^2} * \frac{\partial z^2}{\partial \theta^1_{jk}}\]
+\[\frac{\partial J(\boldsymbol{\Theta})}{\partial \theta_{jk}^1} = \frac{\partial \frac{1}{2}(a^4 - y)^2}{\partial a^4} * \frac{\partial \sigma(z^4)}{\partial z^4} * \frac{\partial (a^3\theta^3_{jk})}{\partial a^3} * \frac{\partial \sigma(z^3)}{\partial z^3} * \frac{\partial (a^2\theta_{jk}^2)}{\partial a^2} * \frac{\partial \sigma(z^2)}{\partial z^2} * \frac{\partial (x\theta_{jk}^1)}{\partial \theta_{jk}^1}\]
+\[\frac{\partial J(\boldsymbol{\Theta})}{\partial \theta_{jk}^1} = (a^4 - y) * \sigma'(z^4) * \theta_{jk}^3 * \sigma'(z^3) * \theta_{jk}^2 * \sigma'(z^2) * x\]
+The same method would have to be applied to all of the weights and biases in our system. In order to minimize the weight $\theta_{jk}^1$ in the system, the derivative would be plugged into the gradient descent alogrithm for the specific training example as follows:
+ \[\theta_{jk}^1 = \theta_{jk}^1 - \alpha \frac{\partial}{\partial\theta_{jk}^1} J(\boldsymbol{\Theta})\]
+\[\theta_{jk}^1 = \theta_{jk}^1 - \alpha ((a^4 - y) * \sigma'(z^4) * \theta_{jk}^3 * \sigma'(z^3) * \theta_{jk}^2 * \sigma'(z^2) * x)\]
+\[\theta_{jk}^1 = \theta_{jk}^1 - \alpha ((a^4 - y) * \sigma(z^4)(1-\sigma(z^4)) * \theta_{jk}^3 * \sigma(z^3)(1-\sigma(z^3)) * \theta_{jk}^2 * \sigma(z^2)(1-\sigma(z^2)) * x)\]
+
+
+
 
 
 
