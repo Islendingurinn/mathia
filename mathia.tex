@@ -6,13 +6,13 @@
 \graphicspath{ {.} }
 \begin{document}
 
-\title{%
-  The process of minimizing the error function within Machine Learning \\
-  \small Mathematics HL Internal Assessment}
-\author{Andrew Roberts}
-\date{December 2004}
-\maketitle
-\pagebreak
+\begin{center}
+\Huge The process of minimizing the error function within Machine Learning \\
+\small Mathematics HL Internal Assessment
+\end{center}
+
+\section{Rationale}
+This mathematical exploration focuses on the process of minimizing the error of a neural network, a big part of the machine learning field. Machine learning and artificial intelligence has always stood out to me given its apparent complexity and increasing usage. I've always been fascinated by computer's and mathemtical model's ability to learn from past experience, something that has always been regarded as an ultimately human trait. I want to investigate how calculus, and in particular the chain rule, is being applied to these models and what it is that these different methods of minimizing the error function is eventually achieving. 
 
 \section{Notation}
 The notation \(m\) means the number of training sets. \\
@@ -21,12 +21,12 @@ The notation $x$ means input, while $\boldsymbol{X}$ means the matrix collection
 The notation $y$ means output, while $\boldsymbol{y}$ means the matrix collection of all outputs. \\
 The notation \boldmath{$\Theta$}\unboldmath \ means the matrix collection of weights of the model. \\
 The notation $\theta_{jk}^l$ means the weight connecting neuron j to k, in layer l. \\
-The notation $b_j^l$ means the bias connected to neuron j, in layer l. \\
+The notation $b_j^l$ means the bias connected to neuron j, in layer l. Also noted as $\theta^l_0$ with reference to no previous connection.\\
 The notation $z_j^l$ means the value gained from the hypothesis function. \\
 The notation $\sigma$ means the activation function. \\
 The notation $a^l_j$ means the activation of neuron j, in layer l. 
 
-\section{Neural Networks}
+\section{Introduction on neural networks}
 An artificial neural network is defined as 'a computer system modelled on the human brain and nervous system'. In a sentence, a neural network is a collection of input, hidden and output neurons whose values are determined through learning. The process is that given some input x the network will give an output \(y\), which follows a mathematical model that learns from previous experiences. The neural network setup has three layers. The first layer is the input layer, a matrix \textbf{\emph{X}} of \(i\) inputs \(x_0,x_1,...x_i\). The input layer is simply the values that are put into the network, or the data. The second layer is the hidden layer where there is a collection of weights(\(\boldsymbol{\Theta}\)) and biases, which are manipulated by the machine learning algorithm from experience to introduce the most accurate model. The hidden player is anything that is not a part of the input and output layers and can be any layers thick. The last layer is the output layer which gives out the output, \(y\). The weights in the hidden layer take on a certain activation value based on a hypothesis function that gets run through an activation function. The collection of values from the previous layer then gets transitioned to the next layer, into each weight and new values are computed. The weights end up making a decision on a regression or classification problem. A regression problem deals with continuous problems, for example deciding the price of a certain size of a new house given data about housing prices and sizes in the region. A classification problem deals with classifying the data. For example, deciding if an image is an apple or an orange. At the output layer, these decisions would be given.
 
 \section{Modelling}
@@ -41,6 +41,7 @@ The square-error function is easy to use to minimize given its convexity. The fu
 \section{The activation function}
 At each neuron in the neural network, the previous layer of neurons get multiplied by the weight connecting them to the neurons in the next layer. Mathematically, that is given by our hypothesis function of $h_{\boldsymbol{\Theta}}(x)$. The value then gets run through an activation function. The activation function makes the expression non-linear and binds it to a range. A well-used function is the sigmoid, which binds the activation output into a range between 0 and 1. The sigmoid is given by, and takes on the following graph:
 \[S(x) = \frac{1}{1+e^{-x}}\]
+\includegraphics[scale=0.25]{sigmoid}
 
 In the process of backpropagation, it is important the activation function is differentiable. The sigmoid function can be derived, and will come in handy later:
 \[\frac{d}{dx}S = \frac{d}{dx}(1+e^{-x})^{-1}\]
@@ -61,10 +62,11 @@ The goal of the gradient descent algorithm is to minimize the error function by 
 \[\frac{\partial}{\partial\theta_j} [J(\boldsymbol{\Theta})] = \frac{1}{m} \sum_{i=1}^m (h_{\boldsymbol{\Theta}}(x^{(i)}) - y^{(i)})x_j^{(i)}\]
 The final algorithm is therefore
 \[\theta_j = \theta_j - \alpha \frac{1}{m} \sum_{i=1}^m (h_{\boldsymbol{\Theta}}(x^{(i)} - y^{(i)})x_j^{(i)} for j = 0,1,...,n\]
+\\
 The algorithm can be seen in action on this figure. The plot shows the plot of a two feature squared error, plotted against the cost function. The path of the algorithm toward the global minimum is shown in red and blue, for each iteration. 
 \\
 \includegraphics[scale=0.38]{gradientdescent}
-
+\\
 \section{Normal equations}
 A more analytical way to compute the global minimum of the convex error function is by using normal equations. The normal equation gives the parameters for a minimized error function and is defined as
 \begin{center}
@@ -109,8 +111,9 @@ Now that the normal equations and gradient descent is explained, the backpropaga
 \\ 4. Repeat\end{center}
 Backpropagation is an application of the chain rule from calculus. The goal of the algorithm is to get the derivate of every weight and bias with respect to the error function. The derivative permits seeing the impact changing a certain weight has to the overall cost function, along with minimizing the weights with respect to the error function. 
 \\
-\includegraphics[scale=0.56]{onedimension}
-The figure includes a simple one input, one feature neural network, without a bias, to give further intutition. The network takes in an input, $x$, in the first layer. Then to determine the activation value of the second layer, the hypothesis function $h_{\boldsymbol{\Theta}} = x*\theta_{jk}^1$ gets employed. The value is denoted $z^l_j$ for convenience, l being for layer and j being for identifying the neuron. However, $z^l_j$ then gets ran through the sigmoid function for the complete activation value, denoted $a^l_j$. The process continues, as between the second and third layer the figure showcases the process in further depth. The value $a^l_j$, from our previous neuron, gets multiplied by the weight inbetween them, $\theta_{jk}^2$, and then put through the activation function once again to determine the activation value for the neuron. The process continues until the output, where the model's prediction would be displayed. 
+\includegraphics[scale=0.548]{onedimension}
+\\
+The figure includes a simple one input, one feature neural network, without a bias, to give further intutition. The network takes in an input, $x$, in the first layer. Then to determine the activation value of the second layer, the hypothesis function $h_{\boldsymbol{\Theta}} = x*\theta_{jk}^1$ gets employed. The value is denoted $z^l_j$ for convenience, l being for layer and j being for identifying the neuron. In this case, the indication $jk$ does not matter as there is only one neuron per layer. However, $z^l_j$ then gets ran through the sigmoid function for the complete activation value, denoted $a^l_j$. The process continues, as between the second and third layer the figure showcases the process in further depth. The value $a^l_j$, from our previous neuron, gets multiplied by the weight inbetween them, $\theta_{jk}^2$, and then put through the activation function once again to determine the activation value for the neuron. The process continues until the output, where the model's prediction would be displayed. 
 \\ The backpropagation in this case for our first weight, the one that affects everything in our system, would be the derivative \[\frac{\partial J(\boldsymbol{\Theta})}{\partial \theta_{jk}^1}\] The derivative of the error function with respect to the first weight. However, in order to compute this derivative the chain rule has to be employed, as:
 \[\frac{\partial J(\boldsymbol{\Theta})}{\partial \theta_{jk}^1} = \frac{\partial J(\boldsymbol{\Theta})}{\partial a^4} * \frac{\partial a^4}{\partial z^4} * \frac{\partial z^4}{\partial a^3} * \frac{\partial a^3}{\partial z^3} * \frac{\partial z^3}{\partial a^2} * \frac{\partial a^2}{\partial z^2} * \frac{\partial z^2}{\partial \theta^1_{jk}}\]
 \[\frac{\partial J(\boldsymbol{\Theta})}{\partial \theta_{jk}^1} = \frac{\partial \frac{1}{2}(a^4 - y)^2}{\partial a^4} * \frac{\partial \sigma(z^4)}{\partial z^4} * \frac{\partial (a^3\theta^3_{jk})}{\partial a^3} * \frac{\partial \sigma(z^3)}{\partial z^3} * \frac{\partial (a^2\theta_{jk}^2)}{\partial a^2} * \frac{\partial \sigma(z^2)}{\partial z^2} * \frac{\partial (x\theta_{jk}^1)}{\partial \theta_{jk}^1}\]
@@ -119,33 +122,40 @@ The same method would have to be applied to all of the weights and biases in our
  \[\theta_{jk}^1 = \theta_{jk}^1 - \alpha \frac{\partial}{\partial\theta_{jk}^1} J(\boldsymbol{\Theta})\]
 \[\theta_{jk}^1 = \theta_{jk}^1 - \alpha ((a^4 - y) * \sigma'(z^4) * \theta_{jk}^3 * \sigma'(z^3) * \theta_{jk}^2 * \sigma'(z^2) * x)\]
 \[\theta_{jk}^1 = \theta_{jk}^1 - \alpha ((a^4 - y) * \sigma(z^4)(1-\sigma(z^4)) * \theta_{jk}^3 * \sigma(z^3)(1-\sigma(z^3)) * \theta_{jk}^2 * \sigma(z^2)(1-\sigma(z^2)) * x)\]
+\\
+\includegraphics[scale=0.548]{multidimension}
+\\
+Increasing the layers in the network, the same principles can be used. To find the derivative of the error function with respect to a weight in the first layer, the chain rule is employed. There are further steps that need to be ensured, however. Backtracking to the weight $\theta^1_{22}$, or the weight connecting the input $x_2$ to the neuron $z^2_2$, would be denoted as the derivative:
+\[\frac{\partial J(\boldsymbol{\Theta})}{\partial \theta^1_{22}}\]
+Backpropagating through to layer 4 is nothing different than from before, and means:
+\[\frac{\partial J(\boldsymbol{\Theta})}{\partial \theta^1_{22}} = \frac{\partial J(\boldsymbol{\Theta})}{\partial a^4} * \frac{\partial a^4}{z^4} * \frac{z^4}{\partial \theta_{22}^1}\]
+\[\frac{\partial J(\boldsymbol{\Theta})}{\partial \theta^1_{22}} = (a^4 - y) * \sigma'(z^4) * \frac{z^4}{\partial \theta_{22}^1}\]
+To expand on the last derivative, in layer 3 the process changes, as all three of the connections made need to taken into account:
+\[\frac{z^4}{\partial \theta_{22}^1} = \sum_{j=1}^3 \frac{\partial z^4}{a^3_j} * \frac{\partial a^3_j}{\partial z^3_j} * \frac{\partial z^3_j}{\partial \theta_{22}^1}\]
+Individually, these make:
+\[\frac{\partial z^4}{a^3_j} = \frac{\partial}{\partial a^3_j} b^3 + a^3_j\theta^3_{j1} = \theta^3_{j1}\]
+\[\frac{\partial a^3_j}{\partial z^3_j} = \frac{\partial }{\partial z^3_j} \sigma(z^3_j) = \sigma'(z^3_j) = \sigma(z^3_j)(1-\sigma(z^3_j))\]
+That makes our initial derivative:
+\[\frac{\partial J(\boldsymbol{\Theta})}{\partial \theta^1_{22}} = (a^4 - y) * \sigma'(z^4) * \sum_{j=1}^3 \Big[\theta^3_{j1} * \sigma'(z^3_j) * \frac{\partial z^3_j}{\partial \theta^1_{22}}\Big]\]
+Then moving into layer 2, using the similar approach. However, given that layer 2 has three possible connections for the weight, the sum of them is introduced:
+\[\frac{\partial z^3_j}{\partial \theta^1_{22}} = \sum_{j=1}^{3} \frac{\partial z^3_j}{a^2_2} * \frac{a^2_2}{z^2_2} * \frac{z^2_2}{\theta_{22}^1}\]
+\[\frac{\partial z^3_j}{\partial \theta^1_{22}} = \sum_{j=1}^{3} \theta^2_{j2} * \sigma'(z^2_j) * \frac{z^2_2}{\theta_{22}^1}\]
+The initial derivative is now set at:
+\[\frac{\partial J(\boldsymbol{\Theta})}{\partial \theta^1_{22}} = (a^4 - y) * \sigma'(z^4) * \sum_{j=1}^3 \Big[\theta^3_{j1} * \sigma'(z^3_j) * \sum_{j=1}^{3} \Big[ \theta^2_{j2} * \sigma'(z^2_2) * \frac{\partial z^2_2}{\partial \theta_{22}^1}\Big]\Big]\]
+The last layer is now left, to find the derivative of the cost function with respect to the weight $\theta_{22}^1$:
+\[\frac{z^2_2}{\theta_{22}^1} = \frac{\partial}{\partial \theta_{22}^1} \ b^1 + x_1\theta_{21}^1 + x_2\theta_{22}^1 + x_3\theta^1_{23} = x_2\]
+The complete computation for the weight $\theta_{22}^1$ is therefore: 
+\[\frac{\partial J(\boldsymbol{\Theta})}{\partial \theta^1_{22}} = (a^4 - y) * \sigma'(z^4) * \sum_{j=1}^3 \Big[\theta^3_{j1} * \sigma'(z^3_j) * \sum_{j=1}^{3} \Big[ \theta^2_{j2} * \sigma'(z^2_2) * x_2\Big]\Big]\]
+A more general form for any weight in the first layer could also be devised, such that layer 2 takes on further general values, given a neuron $k$:
+\[\frac{\partial J(\boldsymbol{\Theta})}{\partial \theta^1_{jk}} = (a^4 - y) * \sigma'(z^4) * \sum_{j=1}^3 \Big[\theta^3_{j1} * \sigma'(z^3_j) * \sum_{j=1}^{3} \Big[ \theta^2_{jk} * \sigma'(z^2_j) * \sum_{j=1}^3x_j\Big]\Big]\]
+As such, the gradient descent algorithm for $\theta_{jk}^1$ would then be:
+\[\theta_{jk}^1 = \theta_{jk}^1 - \alpha\Big((a^4 - y) * \sigma'(z^4) * \sum_{j=1}^3 \Big[\theta^3_{j1} * \sigma'(z^3_j) * \sum_{j=1}^{3} \Big[ \theta^2_{jk} * \sigma'(z^2_j) * \sum_{j=1}^3x_j\Big]\Big]\Big)\]
+The same can be done for the bias, $b^1$ in layer 1. However, instead of deriving with respect to the weight, the cost function is derived with respect to the bias:
+\[\frac{\partial J(\boldsymbol{\Theta})}{\partial b^1} = (a^4 - y) * \sigma'(z^4) * \sum_{j=1}^3 \Big[\theta^3_{j1} * \sigma'(z^3_j) * \sum_{j=1}^{3} \Big[ \theta^2_{jk} * \sigma'(z^2_j) * \frac{\partial z^2_j}{\partial b^1}\Big]\Big]\]
+\[\frac{\partial z^2_j}{\partial b^1} = \frac{\partial}{\partial b^1} \ b^1 + x_1\theta_{21}^1 + x_2\theta_{22}^1 + x_3\theta^1_{23} = 1\]
+\[\frac{\partial J(\boldsymbol{\Theta})}{\partial b^1} = (a^4 - y) * \sigma'(z^4) * \sum_{j=1}^3 \Big[\theta^3_{j1} * \sigma'(z^3_j) * \sum_{j=1}^{3} \Big[ \theta^2_{jk} * \sigma'(z^2_j)\Big]\Big]\]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\section{Conclusion}
+The process of minimizing the error function is a large process, and gets larger depending on the amount of features the network includes. However, there are some similarities that stay true when it comes to finding the optimal weights, such as the correlation between finding the derivative using backpropagation and the gradient descent algorithm, along with the similarities within the equations themselves. The inituition behind these processes is surprisingly simple, given the level of mathematics, but that is what makes it so captivating.
 
 \end{document}
